@@ -1,0 +1,23 @@
+<h3>Previous API Calls:</h1>
+<div id="caches"><%= render "caches" %></div>
+
+<h3>New API Calls:</h3>
+<%= form_tag("/proxy", method: "get",remote:true) do %>
+	<table>
+		<tr>
+			<td><%= label_tag(:timeout, "Timeout (sec): ") %></td>
+			<td><%= text_field_tag(:timeout) %></td>
+		</tr>
+		<tr>
+			<td><%= label_tag(:url, "URL:") %></td>
+			<td><%= text_field_tag(:url) %></td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td><%= submit_tag("Submit") %></td>
+		</tr>
+	</table>
+<% end %>
+
+<h3>Output: </h3>
+<div id="output"><%= render "output" %></div>

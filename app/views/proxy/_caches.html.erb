@@ -1,0 +1,12 @@
+<table>
+	<tr>
+		<th>URL</th>
+		<th>Link</th>
+	</tr>
+	<% @caches.each do |cache| %>
+		<tr>
+			<td><%= cache.url %></td>
+			<td><a href="#" onclick="javascript:$('#response').html('<%= j cache.json %>')">Click</a></td>
+		</tr>
+	<% end %>
+</table>
