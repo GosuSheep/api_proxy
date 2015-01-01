@@ -2,6 +2,7 @@ source 'https://rubygems.org'
 
 gem 'httparty'
 gem 'figaro'
+gem 'devise'
 
 # Bundle edge Rails insftead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.0'

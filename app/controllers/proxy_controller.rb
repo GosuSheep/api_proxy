@@ -6,7 +6,11 @@ class ProxyController < ApplicationController
   
   # On the main index page, get all previous caches. Display them for easy calls
   def index
-    @caches = JsonCache.all
+    if (user_signed_in?)
+      @caches = JsonCache.where(user_id: current_user.id)
+    else
+      @caches = JsonCache.where(user_id: nil)
+    end
   end
   
   def get_json
@@ -20,8 +24,16 @@ class ProxyController < ApplicationController
   end
   
   def get
+    
     # Get all caches
-    @caches = JsonCache.all
+    if (user_signed_in?)
+      @user_id = current_user.id
+      log("using caches from user: "+current_user.id.inspect)
+    else
+      @user_id = nil
+      log("null user caches")
+    end
+    @caches = JsonCache.where(user_id: @user_id)
     
     # Get URL and make full URL including API key
     @url = params[:url]
@@ -33,7 +45,11 @@ class ProxyController < ApplicationController
     end
     
     # Check first cache instance with the same input URL
-    @cache = JsonCache.where(url: @url).first
+    if (user_signed_in?)
+      @cache = JsonCache.where(url: @url,user_id: @user_id).first
+    else
+      @cache = JsonCache.where(url: @url,user_id: @user_id).first
+    end
     
     # If no cache was found, we'll make the API request
     if (@cache.nil?)
@@ -43,7 +59,7 @@ class ProxyController < ApplicationController
       @response = HTTParty.get(@url)
       
       # cache the response
-      @cache = JsonCache.new(url: @url,json: @response)
+      @cache = JsonCache.new(url: @url,json: @response,user_id: @user_id)
       
       # Save the cache to the db
       @cache.save
@@ -78,7 +94,7 @@ class ProxyController < ApplicationController
     if (@log.nil?)
       @log = text
     else
-      @log += text  
+      @log += text
     end
   end
   

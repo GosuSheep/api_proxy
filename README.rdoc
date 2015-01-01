@@ -11,4 +11,8 @@ Upon every GET call, the string ?apiKey=<your_api_key> is appended to the end.
  
 * additional info:
  * I had to add the file cacert.pem to the root directory. It contains certificate authorities that allow SSL connections to various pages (e.g. battle.net).
- * This cert is only for development. On production (e.g. heroku), this may not be needed. If you do indeed need this, edit application.yml and put under test/production as needed.  
+ * This cert is only for development. On production (e.g. heroku), this may not be needed. If you do indeed need this, edit application.yml and put under test/production as needed.
+ 
+* gmail:
+ * api.proxy.smtp@gmail.com;
+ * :ApiProxy123   
