@@ -1,6 +1,3 @@
-require 'net/https'
-require 'openssl'
-
 # This controller makes RESTful API calls and caches them. If a timeout is exceeded, the call is made again.  
 class ProxyController < ApplicationController
   
@@ -12,18 +9,26 @@ class ProxyController < ApplicationController
     @caches = JsonCache.all
   end
   
+  def get_json
+    get
+    render json:@response
+  end
+  
   # This is a GET API call. This takes an input URL, checks to see if a cached record exists, and if not, adds on an API key and makes the call.
+  def get_ajax
+    get
+  end
+  
   def get
     # Get all caches
     @caches = JsonCache.all
     
     # Get URL and make full URL including API key
     @url = params[:url]
-    @fullUrl = @url+"?apiKey="+ENV["API_KEY"]
     
     # Check if timeout was input, if not, fallback on default
     @timeout = params[:timeout]
-    if (@timeout.empty?)
+    if (@timeout.nil? || @timeout.empty?)
       @timeout = @@timeout
     end
     
@@ -35,7 +40,7 @@ class ProxyController < ApplicationController
       log("cache empty")
       
       # Make API call
-      @response = HTTParty.get(@fullUrl)
+      @response = HTTParty.get(@url)
       
       # cache the response
       @cache = JsonCache.new(url: @url,json: @response)
@@ -46,10 +51,10 @@ class ProxyController < ApplicationController
       # if a cache was found, check when it was updated. Subtract "now" from the cache's "updated_at"
       # if it exceeds the timeout, make a call again
       if Time.zone.now - @cache.updated_at >= @timeout.to_f
-        log("Timeout of " + (Time.zone.now - @cache.updated_at).inspect + " exceeded limit: "+@timeout)
+        log("Timeout of " + (Time.zone.now - @cache.updated_at).inspect + " exceeded limit: "+@timeout.inspect)
         
         # Make the call
-        @response = HTTParty.get(@fullUrl)
+        @response = HTTParty.get(@url)
         
         # Update the caches json string
         @cache.json = @response
@@ -65,7 +70,6 @@ class ProxyController < ApplicationController
       
       # Set our cache's json
       @response = @cache.json
-      
     end
   end
   

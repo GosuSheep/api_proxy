@@ -1,12 +1,16 @@
 <table>
 	<tr>
 		<th>URL</th>
-		<th>Link</th>
+		<th>Updated At</th>
+		<th>Load</th>
+		<th>Reload</th>
 	</tr>
 	<% @caches.each do |cache| %>
 		<tr>
 			<td><%= cache.url %></td>
+			<td><%= cache.updated_at %></td>
 			<td><a href="#" onclick="javascript:$('#response').html('<%= j cache.json %>')">Click</a></td>
+			<td><a href="#" onclick="$.ajax('/proxy?timeout=0&url=<%= j cache.url %>')">Click</a></td>
 		</tr>
 	<% end %>
 </table>

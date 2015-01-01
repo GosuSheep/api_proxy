@@ -5,7 +5,8 @@ Rails.application.routes.draw do
   # You can have the root of your site routed with "root"
   root 'proxy#index'
   
-  get 'proxy' => 'proxy#get'
+  get 'proxy' => 'proxy#get_ajax'
+  get 'proxy/get' => 'proxy#get_json'
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

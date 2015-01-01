@@ -1,2 +1,20 @@
-Log: <div id="log"><%= @log %></div>
-Response: <div id="response"><%= @response %></div>
+<table>
+	<tr>
+		<td><strong>Link:</strong></td>
+		<td>
+			<% if params[:url].nil? %>
+				&nbsp;
+			<% else %>
+				<a href="<%= root_path %>proxy/get?url=<%= params[:url] %>">Click</a>
+			<% end %>
+		</td>
+	</tr>
+	<tr>
+		<td><strong>Log:</strong></td>
+		<td><div id="log"><%= @log %></div></td>
+	</tr>
+	<tr>
+		<td><strong>Response:</strong></td>
+		<td><div id="response"><%= @response %></div></td>
+	</tr>
+</table>
