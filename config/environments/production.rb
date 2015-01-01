@@ -27,6 +27,8 @@ Rails.application.configure do
   # Compress JavaScripts and CSS.
   config.assets.js_compressor = :uglifier
   # config.assets.css_compressor = :sass
+  
+  config.action_mailer.default_url_options = {host: 'https://git-api-proxy.herokuapp.com/', port:80}
 
   config.assets.compile = true
 
